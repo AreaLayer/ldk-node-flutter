@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
     final path = await getApplicationSupportDirectory();
     //Specifying node folder
     final aliceConfig = await initLdkConfig(
-        "${path.path}/ldk_cache/alice_s.node", "0.0.0.0:3314");
+        "${path.path}/ldk_cache/alice's_node", "0.0.0.0:3314");
     NodeBuilder aliceBuilder = NodeBuilder.fromConfig(aliceConfig);
     aliceNode = await aliceBuilder.build();
     await aliceNode.start();
@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
     final path = await getApplicationSupportDirectory();
     //Specifying node folder
     final bobConfig = await initLdkConfig(
-        "${path.path}/ldk_cache/bob_s.node", "0.0.0.0:7731");
+        "${path.path}/ldk_cache/bob's_node", "0.0.0.0:7731");
     NodeBuilder bobBuilder = NodeBuilder.fromConfig(bobConfig);
     bobNode = await bobBuilder.build();
     await bobNode.start();
@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> {
     final alice = await aliceNode.onChainBalance();
     final bob = await bobNode.onChainBalance();
     if (kDebugMode) {
-      print("alice's balance: ${alice.total}");
+      print("alice's_balance: ${alice.total}");
       print("bob's balance: ${bob.total}");
     }
     setState(() {
@@ -192,7 +192,7 @@ class _MyAppState extends State<MyApp> {
 
   //Failed to send payment due to routing failure: Failed to find a path to the given destination
   receiveAndSendPayments() async {
-    invoice = await bobNode.receivePayment("asdf", 10000, 50000);
+    invoice = await bobNode.receivePayment("Gimme sats!", 10000, 100000000);
     final paymentHash = await aliceNode.sendPayment(invoice!);
     final res = await aliceNode.paymentInfo(paymentHash);
     setState(() {

@@ -184,10 +184,11 @@ class LdkNode {
   }
 
   /// Send a spontaneous, aka. "keysend", payment
+  ///
   Future<PaymentHash> sendSpontaneousPayment(
-      String nodeId, int amountMsat) async {
+      String nodeId, int amountInMilliSat) async {
     final res = await loaderApi.sendSpontaneousPayment(
-        ldkNode: _ldkNode!, amountMsat: amountMsat, nodeId: nodeId);
+        ldkNode: _ldkNode!, amountMsat: amountInMilliSat, nodeId: nodeId);
     return res;
   }
 
