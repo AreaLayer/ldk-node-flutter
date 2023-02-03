@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
     // Please replace this url with your Electrum RPC Api url
     // Please use 10.0.2.2, instead of 127.0.0.1, when connecting from an android emulator to connect to 127.0.0.1
     final esploraUrl =
-    Platform.isAndroid ? "http://10.0.2.2:3002" : "http://127.0.0.1:3002";
+        Platform.isAndroid ? "http://10.0.2.2:3002" : "http://127.0.0.1:3002";
     final config = Config(
         storageDirPath: path,
         esploraServerUrl: esploraUrl,
@@ -192,7 +192,7 @@ class _MyAppState extends State<MyApp> {
 
   //Failed to send payment due to routing failure: Failed to find a path to the given destination
   receiveAndSendPayments() async {
-    invoice = await bobNode.receivePayment("Gimme sats!", 10000, 100000000);
+    invoice = await bobNode.receivePayment("Gimme sats!", 10000, 123456000);
     final paymentHash = await aliceNode.sendPayment(invoice!);
     final res = await aliceNode.paymentInfo(paymentHash);
     setState(() {
@@ -202,7 +202,7 @@ class _MyAppState extends State<MyApp> {
 
   getChannelId() async {
     final channelInfos = await aliceNode.getChannelIds();
-    if(channelInfos.isNotEmpty){
+    if (channelInfos.isNotEmpty) {
       channelId = channelInfos.first;
       if (kDebugMode) {
         print(channelId.toString());
@@ -210,40 +210,38 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         displayText = channelId.toString();
       });
-    } else{
+    } else {
       if (kDebugMode) {
         print("No open channels available");
       }
     }
   }
 
-  Future  handleEvent(LdkNode node ) async {
+  Future handleEvent(LdkNode node) async {
     final res = await node.nextEvent();
-    res?.map(
-        paymentSuccessful: (e){
-          if (kDebugMode) {
-            print("paymentSuccessful: ${e.paymentHash.asString}");
-          }},
-        paymentFailed: (e){
-          if (kDebugMode) {
-            print("paymentFailed: ${e.paymentHash.asString}");
-          }
-        },
-        paymentReceived: (e){
-          if (kDebugMode) {
-            print("paymentReceived: ${e.paymentHash.asString}");
-          }
-        },
-        channelReady: (e){
-          if (kDebugMode) {
-            print("channelReady: ${e.channelId}, userChannelId: ${e.userChannelId}");
-          }
-        },
-        channelClosed: (e){
-          if (kDebugMode) {
-            print("channelClosed: ${e.channelId}, userChannelId: ${e.userChannelId}");
-          }
-        });
+    res?.map(paymentSuccessful: (e) {
+      if (kDebugMode) {
+        print("paymentSuccessful: ${e.paymentHash.asString}");
+      }
+    }, paymentFailed: (e) {
+      if (kDebugMode) {
+        print("paymentFailed: ${e.paymentHash.asString}");
+      }
+    }, paymentReceived: (e) {
+      if (kDebugMode) {
+        print("paymentReceived: ${e.paymentHash.asString}");
+      }
+    }, channelReady: (e) {
+      if (kDebugMode) {
+        print(
+            "channelReady: ${e.channelId}, userChannelId: ${e.userChannelId}");
+      }
+    }, channelClosed: (e) {
+      if (kDebugMode) {
+        print(
+            "channelClosed: ${e.channelId}, userChannelId: ${e.userChannelId}");
+      }
+    });
     await node.eventHandled();
   }
 
